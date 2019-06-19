@@ -9,9 +9,17 @@ module.exports = {
         // create Request object
         var request = new sql.Request();
         // query to the database and get the records
-        request.query(
+        var queryDB = `SELECT * FROM employees`
+        if(req.query.idEmployee) {
+          queryDB = 
           `
             SELECT * FROM employees
+              WHERE id = ${req.query.idEmployee}
+          `
+        }
+        request.query(
+          `
+            ${queryDB}
           `
         , function (err, recordset) {
             if (err) console.log(err)
@@ -57,7 +65,7 @@ module.exports = {
           })
         } else {
           res.status(201).json({
-            message: `Success To Add Emlployee ${userData.name}`,
+            message: `Success To Add Emlployee ${userData.name_employee}`,
           })
         }
         sql.close()
@@ -66,18 +74,20 @@ module.exports = {
   },
   editEmployee: (req, res) => {
     sql.connect(configDB, function(err) {
+      console.log('masuk');
+      
       if(err) console.log(err)
       var request = new sql.Request();
       request.query(
         `
           UPDATE employees
           SET 
-            ${`name_employee = '${req.body.name}'` || ''},
-            ${`noreg_employee = ${req.body.noreg}` || ''},
-            ${`no_polisi = '${req.body.noPolisi}'` || ''},
+            ${`name_employee = '${req.body.name_employee}'` || ''},
+            ${`noreg_employee = ${req.body.noreg_employee}` || ''},
+            ${`no_polisi = '${req.body.no_polisi}'` || ''},
             ${`shift = '${req.body.shift}'` || ''},
-            ${`berlaku_sim = '${req.body.berlakuSim}'` || ''},
-            ${`berlaku_stnk = '${req.body.berlakuStnk}'` || ''}
+            ${`berlaku_sim = '${req.body.berlaku_sim}'` || ''},
+            ${`berlaku_stnk = '${req.body.berlaku_stnk}'` || ''}
           WHERE id = ${req.params.idEmployee}
         `
       , function(err, recordset) {
