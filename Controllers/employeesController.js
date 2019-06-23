@@ -131,5 +131,67 @@ module.exports = {
         }
       )
     })
+  },
+  patrolCheckEmployee: (req, res) => {
+    sql.connect(configDB, function(err) {
+      if(err) console.log(err);
+      console.log(req.body);
+      console.log(req.params.idEmployee);
+      
+      let request = new sql.Request();
+      request.query(
+      `
+        INSERT INTO checked_patrol (
+          employeeID, date_checked, lamp_fr, lamp_rr, lamp_br,
+          sign_rg, sign_lf, spion_rg, spion_lf, sim_check, asuransi_check,
+          stnk_check, helm_check, klakson_check, sepatu_check, roda_check,
+          jas_hujan, spare_lamp_fr, spare_lamp_rr, note_atasan
+        )
+        VALUES (
+          ${req.params.idEmployee}, '${req.body.date_checked}', '${req.body.lamp_fr}', '${req.body.lamp_rr}', '${req.body.lamp_br}', 
+          '${req.body.sign_rg}', '${req.body.sign_lf}', '${req.body.spion_rg}', '${req.body.spion_lf}', '${req.body.sim_check}', '${req.body.asuransi_check}',
+          '${req.body.stnk_check}', '${req.body.helm_check}', '${req.body.klakson_check}', '${req.body.sepatu_check}', '${req.body.roda_check}', 
+          '${req.body.jas_hujan}', '${req.body.spare_lamp_fr}', '${req.body.spare_lamp_fr}', '${req.body.note_atasan}'
+        )
+      `
+      , function(err, recordset) {
+        if(err) {
+          res.status(500).json({
+            messsage: 'Error'
+          })
+        } else {
+          res.status(201).json({
+            message: 'Success',
+            data: recordset
+          })
+        }
+        sql.close()
+      })
+    })
+  },
+  getAllCheckedPatrol: (req, res) => {
+    sql.connect(configDB, function(err) {
+      if(err) console.log(err);
+      let request = new sql.Request()
+
+      request.query(
+      `
+        SELECT * FROM employees JOIN checked_patrol
+        ON (id = employeeID)
+      `
+      , function(err, recordset) {
+        if(err) {
+          res.status(500).json({
+            message: 'Error'
+          })
+        } else {
+          res.status(200).json({
+            message: 'Success',
+            data: recordset
+          })
+        }
+        sql.close()
+      })
+    })
   }
 }
