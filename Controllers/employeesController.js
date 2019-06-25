@@ -151,7 +151,7 @@ module.exports = {
           ${req.params.idEmployee}, '${req.body.date_checked}', '${req.body.lamp_fr}', '${req.body.lamp_rr}', '${req.body.lamp_br}', 
           '${req.body.sign_rg}', '${req.body.sign_lf}', '${req.body.spion_rg}', '${req.body.spion_lf}', '${req.body.sim_check}', '${req.body.asuransi_check}',
           '${req.body.stnk_check}', '${req.body.helm_check}', '${req.body.klakson_check}', '${req.body.sepatu_check}', '${req.body.roda_check}', 
-          '${req.body.jas_hujan}', '${req.body.spare_lamp_fr}', '${req.body.spare_lamp_fr}', '${req.body.note_atasan}'
+          '${req.body.jas_hujan}', '${req.body.spare_lamp_fr}', '${req.body.spare_lamp_rr}', '${req.body.note_atasan}'
         )
       `
       , function(err, recordset) {
